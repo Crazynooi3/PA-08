@@ -61,6 +61,28 @@ body{
     width: 90px;
 }
 
+.weather_titles{
+    display: flex;
+    align-items: center;
+    /* height: 100%; */
+    max-width: 700px;
+    flex-wrap: wrap;
+    row-gap: 18px;
+    column-gap: 18px;
+    
+}
+
+.weather_title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 150px;
+    color: rgba(255, 255, 255, 0.04) ;
+    border: 2px solid rgba(255, 255, 255, 0.5) ;
+    backdrop-filter: blur(8px);
+
+}
 .tod_weather_info{
     display: flex;
     align-items: center;
