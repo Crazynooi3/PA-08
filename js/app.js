@@ -15,6 +15,20 @@ async function fetchCountries() {
         console.error('we have an error:', error)
     }
 }
+
+
+async function fetchWeather(lon , lat) {
+    try {    
+        const response = await fetch(`https://www.7timer.info/bin/civillight.php?lon=${lon}&lat=${lat}&ac=0&unit=metric&output=json&tzshift=0`)
+        const data = await response.json();
+        return data;
+    }
+    catch (error) {
+        console.error('we have an error:', error)
+    }
+}
+
+
 let customData = []
 let capitals =[]
 async function dataProgress() {
@@ -33,11 +47,13 @@ async function dataProgress() {
 }
 dataProgress()
 // console.log(customData);
-console.log(capitals);
+// console.log(capitals);
 
 // -----------------------------------------------
 const inputElm = document.getElementById('search')
 const suggestionsList = document.getElementById('suggestionsList');
+const W_rightElmn = document.querySelector('.Wrapper_right')
+
 inputElm.addEventListener('input', function () {
     const value = inputElm.value.toLowerCase()
     suggestionsList.innerHTML = ''
@@ -60,7 +76,66 @@ inputElm.addEventListener('input', function () {
     }
     
 })
-console.log(inputElm);
+
+function getLonLet(event) {
+    let lat = 0;
+    let lon = 0;
+    if (event.key === 'Enter') {
+        const userSearch = inputElm.value.split(',')[0].trim();
+        const result = customData.filter(item => 
+            item.name.includes(userSearch) || item.capital.includes(userSearch))
+        
+        lat = result[0].lat
+        lon = result[0].len
+
+    return [lon,lat]
+}};
+
+inputElm.addEventListener('keydown', async function(event){
+    const [lon, lat] = getLonLet(event)
+    const data = await fetchWeather(lon, lat)
+    data.forEach((data) => {
+        const weatherHTML = `
+        <div class="Weather_detail">
+                <span>${data.dataseries.data}</span>
+                <div class="row">
+                    <span>Temp max</span>
+                    <div class="row_temp">
+                        <span>19°</span>
+                        <span><img src="./icons/Vector (3).png" alt=""></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <span>Temp min</span>
+                    <div class="row_temp">
+                        <span>19°</span>
+                        <span><img src="./icons/Vector (4).png" alt=""></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <span>weather</span>
+                    <div class="row_temp">
+                        <span>cloudy</span>
+                        <span><img src="./icons/Cloudy.png" width="22px" alt=""></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <span>wind</span>
+                    <div class="row_temp">
+                        <span>3 m/s</span>
+                        <span><img src="./icons/outline.png" width="22px" alt=""></span>
+                    </div>
+                </div>
+            </div>
+        `;
+        W_rightElmn.insertAdjacentHTML('beforeend',weatherHTML)
+    })
+    
+})
+
+
+// ------------------------------------------------------
+
 
 
 
