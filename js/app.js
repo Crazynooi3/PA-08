@@ -53,6 +53,8 @@ dataProgress()
 const inputElm = document.getElementById('search')
 const suggestionsList = document.getElementById('suggestionsList');
 const W_rightElmn = document.querySelector('.Wrapper_right')
+const locationElem = document.querySelector('.location')
+const timeElem = document.querySelector('time')
 
 inputElm.addEventListener('input', function () {
     const value = inputElm.value.toLowerCase()
@@ -90,48 +92,71 @@ function getLonLet(event) {
 
     return [lon,lat]
 }};
+function formatDate(dateString) {
+    // تاریخ از فرمت YYYYMMDD به یک تاریخ قابل استفاده تبدیل شود
+    const year = parseInt(dateString.substring(0, 4)); // سال را استخراج کنیم
+    const month = parseInt(dateString.substring(4, 6)) - 1; // ماه (منهای ۱ چون ماه‌ها در Date از 0 شروع می‌شوند)
+    const day = parseInt(dateString.substring(6, 8)); // روز
 
-inputElm.addEventListener('keydown', async function(event){
-    const [lon, lat] = getLonLet(event)
-    const data = await fetchWeather(lon, lat)
-    data.forEach((data) => {
-        const weatherHTML = `
-        <div class="Weather_detail">
-                <span>${data.dataseries.data}</span>
-                <div class="row">
-                    <span>Temp max</span>
-                    <div class="row_temp">
-                        <span>19°</span>
-                        <span><img src="./icons/Vector (3).png" alt=""></span>
+    // ساخت یک شیء تاریخ
+    const date = new Date(year, month, day);
+
+    // گرفتن روز هفته و فرمت کردن تاریخ
+    const options = { weekday: 'long', day: 'numeric', month: 'short' };
+    return date.toLocaleDateString('en-US', options);
+}
+inputElm.addEventListener('keydown', async function(event) {
+    if (event.key === 'Enter') {
+        const [lon, lat] = getLonLet(event);
+        const data = await fetchWeather(lon, lat);
+                
+        if (data && data.dataseries) {
+            const wrapper = document.querySelectorAll('.Weather_detail')
+                wrapper.forEach(elem => elem.remove())
+            data.dataseries.forEach((weatherData) => {
+                // فرض می‌کنیم که weatherData شامل دما، وضعیت هوا و سرعت باد است
+                const weatherHTML = `
+                    <div class="Weather_detail">
+                        <span>${formatDate(weatherData.date.toString())}</span>
+                        <div class="row">
+                            <span>Temp max</span>
+                            <div class="row_temp">
+                                <span>${weatherData.temp2m.max}°</span>
+                                <span><img src="./icons/Vector (3).png" alt=""></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span>Temp min</span>
+                            <div class="row_temp">
+                                <span>${weatherData.temp2m.min}°</span>
+                                <span><img src="./icons/Vector (4).png" alt=""></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span>weather</span>
+                            <div class="row_temp">
+                                <span>${weatherData.weather}</span>
+                                <span><img src="./icons/Cloudy.png" width="22px" alt=""></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span>wind</span>
+                            <div class="row_temp">
+                                <span>${weatherData.wind10m_max} m/s</span>
+                                <span><img src="./icons/outline.png" width="22px" alt=""></span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <span>Temp min</span>
-                    <div class="row_temp">
-                        <span>19°</span>
-                        <span><img src="./icons/Vector (4).png" alt=""></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <span>weather</span>
-                    <div class="row_temp">
-                        <span>cloudy</span>
-                        <span><img src="./icons/Cloudy.png" width="22px" alt=""></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <span>wind</span>
-                    <div class="row_temp">
-                        <span>3 m/s</span>
-                        <span><img src="./icons/outline.png" width="22px" alt=""></span>
-                    </div>
-                </div>
-            </div>
-        `;
-        W_rightElmn.insertAdjacentHTML('beforeend',weatherHTML)
-    })
-    
-})
+                `;
+                locationElem.innerHTML = inputElm.value.split(',')[1].trim();
+                // timeElem.innerHTML = formatDate(data.dataseries[0].date.toString());
+                W_rightElmn.insertAdjacentHTML('beforeend', weatherHTML);
+            });
+        } else {
+            console.error('Failed to retrieve weather data.');
+        }
+    }
+});
 
 
 // ------------------------------------------------------
