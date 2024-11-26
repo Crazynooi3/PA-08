@@ -134,6 +134,7 @@ body{
     height: 50px;
     border-bottom: 1px solid #ffffff;
     padding: 10px 0 ;
+    /* position: absolute; */
 }
 
 .search_input > input {
@@ -154,6 +155,31 @@ body{
     font-family: 'Roboto';
 }
 
+.suggestionlist{
+    position: absolute;
+    z-index: 5;
+    top: 130px;
+    width: 370px;
+    height: auto;
+    margin-top: 5px;
+}
+.h_suggestionlist{
+    display: none;
+}
+.suggestionlist > ul {
+    list-style: none;
+    color: rgb(255, 255, 255);
+}
+
+.sug_li {
+    font-family: 'Roboto';
+    /* height: 30px; */
+    background-color: #3a3a3aa9;
+    backdrop-filter: blur(8px);
+    padding: 5px 10px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.473) ;
+    align-content: center;
+}
 .Weather_Detail_text{
     width: 370px;
     margin: 20px 0;
