@@ -1,3 +1,49 @@
+const weatherIcons = [
+    {'clear': './icons/clear.png'},
+    {'mcloudy': './icons/cloud.png'},
+    {'cloudy': './icons/clouds.png'},
+    {'pcloudy': './icons/pcloudy.png'},
+    {'ishower': './icons/ishower.png'},
+    {'lightrain': './icons/rain.png'},
+    {'humid': './icons/humid.png'},
+    {'lightsnow': './icons/lightsnow.png'},
+]
+
+
+function getWeatherIcon(status) {
+    const iconObj = weatherIcons.find(icon => Object.keys(icon)[0] === status);
+    return iconObj ? iconObj[status] : null;
+}
+// console.log(getWeatherIcon('cloudy'));
+
+
+const capitalImags = [
+    {'India, New Delhi':'..\img\Germany, Berlin.jpg'},
+    {'Germany, Berlin':'..\img\India, New Delhi.jpg'},
+    {'Algeria, Algiers':'..\img\Algeria, Algiers.jpg'},
+    {'Afghanistan, Kabul':'..\img\Afghanistan, Kabul.jpg'},
+    {'Bangladesh, Dhaka':'..\img\Bangladesh, Dhaka.jpg'},
+    {'Azerbaijan, Baku':'..\img\Azerbaijan, Baku.jpg'},
+    {'Switzerland, Bern':'..\img\Switzerland, Bern.jpg'},
+    {'China, Beijing':'..\img\China, Beijing.jpg'},
+    {'Egypt, Cairo':'..\img\Egypt, Cairo.jpg'},
+    {'France, Paris':'..\img\France, Paris.jpg'},
+    {'Finland, Helsinki':'..\img\Finland, Helsinki.jpg'},
+    {'Iran, Tehran':'../img/Iran, Tehran.jpg'},
+    {'South Georgia, King Edward Point':'..\img\South Georgia, King Edward Point.jpg'},
+    {'Mexico, Mexico City':'..\img\Mexico, Mexico City.jpg'},
+    {'Lebanon, Beirut':'..\img\Lebanon, Beirut.jpg'},
+    {'Netherlands, Amsterdam':'..\img\Netherlands, Amsterdam.jpg'},
+    {'North Korea, Pyongyang':'..\img\North Korea, Pyongyang.jpg'},
+    {'Uzbekistan, Tashkent':'img\Uzbekistan,Tashkent.jpg'},
+]
+
+function getCapitalImg(Capital) {
+    const capitalImg = capitalImags.find(img => Object.keys(img)[0] === Capital);
+    return capitalImg ? capitalImg[Capital] : null;
+}
+
+console.log(getCapitalImg('Iran, Tehran'));
 
 async function fetchCountries() {
     try {    
@@ -54,7 +100,19 @@ const inputElm = document.getElementById('search')
 const suggestionsList = document.getElementById('suggestionsList');
 const W_rightElmn = document.querySelector('.Wrapper_right')
 const locationElem = document.querySelector('.location')
-const timeElem = document.querySelector('time')
+const timeElem = document.querySelector('.time')
+const srearchIcon = document.querySelector('#search_icon')
+const mainicon = document.querySelector('#tod_weather_icon')
+// const body = document.body
+// console.log(body);
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Iran, Tehran.jpg)`
+
+});
+
+
 
 inputElm.addEventListener('input', function () {
     const value = inputElm.value.toLowerCase()
@@ -66,9 +124,10 @@ inputElm.addEventListener('input', function () {
             li.textContent = item
             li.style.cursor = 'pointer';
             li.classList.add('sug_li') 
-            li.addEventListener('click', function(){
+            li.addEventListener('click', function(event){
                 inputElm.value = item
                 suggestionsList.style.display = 'none'
+                DOMCreator(event)
             })
             suggestionsList.appendChild(li)
         })
@@ -82,7 +141,7 @@ inputElm.addEventListener('input', function () {
 function getLonLet(event) {
     let lat = 0;
     let lon = 0;
-    if (event.key === 'Enter') {
+    if (true) {
         const userSearch = inputElm.value.split(',')[0].trim();
         const result = customData.filter(item => 
             item.name.includes(userSearch) || item.capital.includes(userSearch))
@@ -92,6 +151,7 @@ function getLonLet(event) {
 
     return [lon,lat]
 }};
+
 function formatDate(dateString) {
     // تاریخ از فرمت YYYYMMDD به یک تاریخ قابل استفاده تبدیل شود
     const year = parseInt(dateString.substring(0, 4)); // سال را استخراج کنیم
@@ -105,58 +165,66 @@ function formatDate(dateString) {
     const options = { weekday: 'long', day: 'numeric', month: 'short' };
     return date.toLocaleDateString('en-US', options);
 }
-inputElm.addEventListener('keydown', async function(event) {
-    if (event.key === 'Enter') {
-        const [lon, lat] = getLonLet(event);
-        const data = await fetchWeather(lon, lat);
-                
-        if (data && data.dataseries) {
-            const wrapper = document.querySelectorAll('.Weather_detail')
-                wrapper.forEach(elem => elem.remove())
-            data.dataseries.forEach((weatherData) => {
-                // فرض می‌کنیم که weatherData شامل دما، وضعیت هوا و سرعت باد است
-                const weatherHTML = `
-                    <div class="Weather_detail">
-                        <span>${formatDate(weatherData.date.toString())}</span>
-                        <div class="row">
-                            <span>Temp max</span>
-                            <div class="row_temp">
-                                <span>${weatherData.temp2m.max}°</span>
-                                <span><img src="./icons/Vector (3).png" alt=""></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <span>Temp min</span>
-                            <div class="row_temp">
-                                <span>${weatherData.temp2m.min}°</span>
-                                <span><img src="./icons/Vector (4).png" alt=""></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <span>weather</span>
-                            <div class="row_temp">
-                                <span>${weatherData.weather}</span>
-                                <span><img src="./icons/Cloudy.png" width="22px" alt=""></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <span>wind</span>
-                            <div class="row_temp">
-                                <span>${weatherData.wind10m_max} m/s</span>
-                                <span><img src="./icons/outline.png" width="22px" alt=""></span>
-                            </div>
+// ---------------------
+async function DOMCreator (event) {
+    const [lon, lat] = getLonLet(event);
+    const data = await fetchWeather(lon, lat);
+    // console.log(data);
+    if (data && data.dataseries) {
+        const wrapper = document.querySelectorAll('.Weather_detail')
+        wrapper.forEach(elem => elem.remove())
+        data.dataseries.forEach((weatherData) => {
+            // فرض می‌کنیم که weatherData شامل دما، وضعیت هوا و سرعت باد است
+            const weatherHTML = `
+                <div class="Weather_detail">
+                    <span>${formatDate(weatherData.date.toString())}</span>
+                    <div class="row">
+                        <span>Temp max</span>
+                        <div class="row_temp">
+                            <span>${weatherData.temp2m.max}°</span>
+                            <span><img src="./icons/Vector (3).png" alt=""></span>
                         </div>
                     </div>
-                `;
-                locationElem.innerHTML = inputElm.value.split(',')[1].trim();
-                // timeElem.innerHTML = formatDate(data.dataseries[0].date.toString());
-                W_rightElmn.insertAdjacentHTML('beforeend', weatherHTML);
-            });
-        } else {
-            console.error('Failed to retrieve weather data.');
-        }
-    }
-});
+                    <div class="row">
+                        <span>Temp min</span>
+                        <div class="row_temp">
+                            <span>${weatherData.temp2m.min}°</span>
+                            <span><img src="./icons/Vector (4).png" alt=""></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <span>weather</span>
+                        <div class="row_temp">
+                            <span>${weatherData.weather}</span>
+                            <span><img src=${getWeatherIcon(weatherData.weather)} width="22px" alt=""></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <span>wind</span>
+                        <div class="row_temp">
+                            <span>${weatherData.wind10m_max} m/s</span>
+                            <span><img src="./icons/outline.png" width="22px" alt=""></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            locationElem.innerHTML = inputElm.value.split(',')[1].trim();
+            mainicon.src = getWeatherIcon(data.dataseries[0].weather)
+            // console.log(timeElem);
+            timeElem.innerHTML = formatDate(data.dataseries[0].date.toString());
+            W_rightElmn.insertAdjacentHTML('beforeend', weatherHTML);
+        });
+    } else {
+        console.error('Failed to retrieve weather data.');
+    }};
+
+inputElm.addEventListener('keydown', event =>{
+    if (event.key === 'Enter') {
+        DOMCreator(event)
+    }});
+     
+srearchIcon.addEventListener('click', event => DOMCreator(event));
+// console.log(srearchIcon);
 
 
 // ------------------------------------------------------

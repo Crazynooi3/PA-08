@@ -170,7 +170,9 @@ body{
     list-style: none;
     color: rgb(255, 255, 255);
 }
-
+#search_icon{
+    cursor: pointer;
+}
 .sug_li {
     font-family: 'Roboto';
     /* height: 30px; */
