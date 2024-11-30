@@ -18,24 +18,24 @@ function getWeatherIcon(status) {
 
 
 const capitalImags = [
-    {'India, New Delhi':'..\img\Germany, Berlin.jpg'},
-    {'Germany, Berlin':'..\img\India, New Delhi.jpg'},
-    {'Algeria, Algiers':'..\img\Algeria, Algiers.jpg'},
-    {'Afghanistan, Kabul':'..\img\Afghanistan, Kabul.jpg'},
-    {'Bangladesh, Dhaka':'..\img\Bangladesh, Dhaka.jpg'},
-    {'Azerbaijan, Baku':'..\img\Azerbaijan, Baku.jpg'},
-    {'Switzerland, Bern':'..\img\Switzerland, Bern.jpg'},
-    {'China, Beijing':'..\img\China, Beijing.jpg'},
-    {'Egypt, Cairo':'..\img\Egypt, Cairo.jpg'},
-    {'France, Paris':'..\img\France, Paris.jpg'},
-    {'Finland, Helsinki':'..\img\Finland, Helsinki.jpg'},
-    {'Iran, Tehran':'../img/Iran, Tehran.jpg'},
-    {'South Georgia, King Edward Point':'..\img\South Georgia, King Edward Point.jpg'},
-    {'Mexico, Mexico City':'..\img\Mexico, Mexico City.jpg'},
-    {'Lebanon, Beirut':'..\img\Lebanon, Beirut.jpg'},
-    {'Netherlands, Amsterdam':'..\img\Netherlands, Amsterdam.jpg'},
-    {'North Korea, Pyongyang':'..\img\North Korea, Pyongyang.jpg'},
-    {'Uzbekistan, Tashkent':'img\Uzbekistan,Tashkent.jpg'},
+    {'India, New Delhi':'../img/Germany,Berlin.jpg'},
+    {'Germany, Berlin':'../img/India,New Delhi.jpg'},
+    {'Algeria, Algiers':'../img/Algeria,Algiers.jpg'},
+    {'Afghanistan, Kabul':'../img/Afghanistan,Kabul.jpg'},
+    {'Bangladesh, Dhaka':'../img/Bangladesh,Dhaka.jpg'},
+    {'Azerbaijan, Baku':'../img/Azerbaijan,Baku.jpg'},
+    {'Switzerland, Bern':'../img/Switzerland,Bern.jpg'},
+    {'China, Beijing':'../img/China,Beijing.jpg'},
+    {'Egypt, Cairo':'../img/Egypt,Cairo.jpg'},
+    {'France, Paris':'../img/France,Paris.jpg'},
+    {'Finland, Helsinki':'../img/Finland,Helsinki.jpg'},
+    {'Iran, Tehran':'../img/Iran,Tehran.jpg'},
+    {'South Georgia, King Edward Point':'../img/South Georgia,King Edward Point.jpg'},
+    {'Mexico, Mexico City':'../img/Mexico,Mexico City.jpg'},
+    {'Lebanon, Beirut':'../img/Lebanon,Beirut.jpg'},
+    {'Netherlands, Amsterdam':'../img/Netherlands,Amsterdam.jpg'},
+    {'North Korea, Pyongyang':'../img/North Korea,Pyongyang.jpg'},
+    {'Uzbekistan, Tashkent':'img/Uzbekistan,Tashkent.jpg'},
 ]
 
 function getCapitalImg(Capital) {
@@ -43,7 +43,7 @@ function getCapitalImg(Capital) {
     return capitalImg ? capitalImg[Capital] : null;
 }
 
-console.log(getCapitalImg('Iran, Tehran'));
+// console.log(getCapitalImg('Iran, Tehran'));
 
 async function fetchCountries() {
     try {    
@@ -103,14 +103,19 @@ const locationElem = document.querySelector('.location')
 const timeElem = document.querySelector('.time')
 const srearchIcon = document.querySelector('#search_icon')
 const mainicon = document.querySelector('#tod_weather_icon')
+const loader = document.querySelector('.loader')
+console.log(loader);
+
+
 // const body = document.body
 // console.log(body);
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Iran, Tehran.jpg)`
 
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//     document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Egypt,Cairo.jpg)`
+
+// });
 
 
 
@@ -220,7 +225,15 @@ async function DOMCreator (event) {
 
 inputElm.addEventListener('keydown', event =>{
     if (event.key === 'Enter') {
+        loader.style.display = 'block'
         DOMCreator(event)
+        if (getCapitalImg(inputElm.value) === null) {
+            document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url( ../img/sporisevic-photography-V-g8k1xUZmc-unsplash.jpg)`
+        }
+        else{
+            document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${getCapitalImg(inputElm.value)})`
+        }
+        loader.style.display = 'none'
     }});
      
 srearchIcon.addEventListener('click', event => DOMCreator(event));
