@@ -52,12 +52,14 @@ async function fetchCountries() {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
-        }
+        },
+    
     });
     
     const data = await response.json();
     return data;
     } catch (error) {
+        alert('we have an error pls relode page')
         console.error('we have an error:', error)
     }
 }
