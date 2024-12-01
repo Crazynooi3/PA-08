@@ -97,14 +97,40 @@ body{
 
 .weather_title{
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
+    flex-direction: column;
     width: 120px;
     height: 150px;
     color: rgba(255, 255, 255, 0.04) ;
     border: 2px solid rgba(255, 255, 255, 0.5) ;
     backdrop-filter: blur(8px);
 
+}
+
+.weather_title > span {
+    display: block;
+    color: #ffffff;
+    margin: 0 auto;
+    font-size: 12px;
+}
+
+.weather_title  img {
+    margin: 0 auto;
+
+}
+.temp_wrapper{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    padding-top: 10px;
+}
+.temp_wrapper span{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    
+    color: #ffffff;
 }
 .tod_weather_info{
     display: flex;

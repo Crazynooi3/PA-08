@@ -104,7 +104,9 @@ const timeElem = document.querySelector('.time')
 const srearchIcon = document.querySelector('#search_icon')
 const mainicon = document.querySelector('#tod_weather_icon')
 const loader = document.querySelector('.loader')
-console.log(loader);
+const tod_temp = document.querySelector('.tod_temp')
+const weather_titles = document.querySelector('.weather_titles')
+
 
 
 // const body = document.body
@@ -178,8 +180,19 @@ async function DOMCreator (event) {
     if (data && data.dataseries) {
         const wrapper = document.querySelectorAll('.Weather_detail')
         wrapper.forEach(elem => elem.remove())
+        const mini_wrapper = document.querySelectorAll('.weather_title')
+        mini_wrapper.forEach(elem => elem.remove())
         data.dataseries.forEach((weatherData) => {
-            // فرض می‌کنیم که weatherData شامل دما، وضعیت هوا و سرعت باد است
+            const miniDetile =`
+              <div class="weather_title">
+                    <img src=${getWeatherIcon(weatherData.weather)} alt="">
+                    <span>${formatDate(weatherData.date.toString())}</span>
+                    <div class="temp_wrapper">
+                        <span><img src="./icons/Vector (3).png" alt="">${weatherData.temp2m.max}°</span>
+                        <span><img src="./icons/Vector (4).png" alt="">${weatherData.temp2m.min}°</span>
+                    </div>
+                </div>
+            `
             const weatherHTML = `
                 <div class="Weather_detail">
                     <span>${formatDate(weatherData.date.toString())}</span>
@@ -215,9 +228,13 @@ async function DOMCreator (event) {
             `;
             locationElem.innerHTML = inputElm.value.split(',')[1].trim();
             mainicon.src = getWeatherIcon(data.dataseries[0].weather)
+            let avrage = ((data.dataseries[0].temp2m.max) + (data.dataseries[0].temp2m.min))/2
+            tod_temp.innerHTML = `${avrage}°`
             // console.log(timeElem);
             timeElem.innerHTML = formatDate(data.dataseries[0].date.toString());
             W_rightElmn.insertAdjacentHTML('beforeend', weatherHTML);
+            weather_titles.insertAdjacentHTML('beforeend', miniDetile);
+
         });
     } else {
         console.error('Failed to retrieve weather data.');
@@ -236,7 +253,19 @@ inputElm.addEventListener('keydown', event =>{
         loader.style.display = 'none'
     }});
      
-srearchIcon.addEventListener('click', event => DOMCreator(event));
+srearchIcon.addEventListener('click', event => {
+    DOMCreator(event);
+    setTimeout(() => {
+        if (getCapitalImg(inputElm.value) === null) {
+            document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url( ../img/sporisevic-photography-V-g8k1xUZmc-unsplash.jpg)`
+        }
+        else{
+            document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${getCapitalImg(inputElm.value)})`
+        }
+    }, 1000);
+    
+});
+    
 // console.log(srearchIcon);
 
 
