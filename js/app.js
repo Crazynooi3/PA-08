@@ -111,16 +111,6 @@ const weather_titles = document.querySelector('.weather_titles')
 
 
 
-// const body = document.body
-// console.log(body);
-
-
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Egypt,Cairo.jpg)`
-
-// });
-
 
 
 inputElm.addEventListener('input', function () {
@@ -137,6 +127,12 @@ inputElm.addEventListener('input', function () {
                 inputElm.value = item
                 suggestionsList.style.display = 'none'
                 DOMCreator(event)
+                if (getCapitalImg(inputElm.value) === null) {
+                    document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url( ../img/sporisevic-photography-V-g8k1xUZmc-unsplash.jpg)`
+                }
+                else{
+                    document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${getCapitalImg(inputElm.value)})`
+                }
             })
             suggestionsList.appendChild(li)
         })
@@ -257,15 +253,12 @@ inputElm.addEventListener('keydown', event =>{
      
 srearchIcon.addEventListener('click', event => {
     DOMCreator(event);
-    setTimeout(() => {
-        if (getCapitalImg(inputElm.value) === null) {
-            document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url( ../img/sporisevic-photography-V-g8k1xUZmc-unsplash.jpg)`
-        }
-        else{
-            document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${getCapitalImg(inputElm.value)})`
-        }
-    }, 1000);
-    
+    if (getCapitalImg(inputElm.value) === null) {
+        document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url( ../img/sporisevic-photography-V-g8k1xUZmc-unsplash.jpg)`
+    }
+    else{
+        document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${getCapitalImg(inputElm.value)})`
+    }
 });
     
 // console.log(srearchIcon);
