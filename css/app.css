@@ -84,6 +84,12 @@ body{
     width: 90px;
 }
 
+.Wrapper_left > div {
+    display: flex;
+    justify-content: space-between;
+    width: auto;
+}
+
 .weather_titles{
     display: flex;
     align-items: center;
@@ -186,6 +192,16 @@ body{
     padding: 10px 0 ;
     /* position: absolute; */
 }
+.search_input_mobile{
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 370px;
+    height: 50px;
+    border-bottom: 1px solid #ffffff;
+    padding: 10px 0 ;
+}
 
 .search_input > input {
     border: none;
@@ -198,8 +214,24 @@ body{
     color:rgba(255, 255, 255, 0.9);
 
 }
+.search_input_mobile > input {
+    border: none;
+    background-color: none;
+    background: none;
+    height: 100%;
+    width: 90%;
+    outline: none;
+    font-size: 20px;
+    color:rgba(255, 255, 255, 0.9);
+
+}
 
 .search_input > input::placeholder{
+    color:rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    font-family: 'Roboto';
+}
+.search_input_mobile > input::placeholder{
     color:rgba(255, 255, 255, 0.7);
     font-size: 20px;
     font-family: 'Roboto';
@@ -274,4 +306,32 @@ body{
     justify-content: space-between;
     gap: 12px;
     color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    body{
+        height: auto;
+        overflow: auto;
+    }
+    .Wrapper_left{
+        width: auto;
+    }
+    .Wrapper_right{
+        width: auto;
+        border: none;
+    }
+    .container{
+        flex-direction: column;
+        width: 100vw;
+        padding: 0 24px;
+    }
+    .search_input_mobile{
+        visibility: visible;
+    }
+    .search_input{
+        display: none;
+    }
+    .weather_titles{
+        padding-top: 24px;
+    }
 }
