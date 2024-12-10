@@ -29,7 +29,7 @@ const capitalImags = [
     {'Egypt, Cairo':'../img/Egypt,Cairo.jpg'},
     {'France, Paris':'../img/France,Paris.jpg'},
     {'Finland, Helsinki':'../img/Finland,Helsinki.jpg'},
-    {'Iran, Tehran':'../img/Iran,Tehran.jpg'},
+    {'Iran, Tehran':'../img/IranTehran.jpg'},
     {'South Georgia, King Edward Point':'../img/South Georgia,King Edward Point.jpg'},
     {'Mexico, Mexico City':'../img/Mexico,Mexico City.jpg'},
     {'Lebanon, Beirut':'../img/Lebanon,Beirut.jpg'},
